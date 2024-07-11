@@ -5,7 +5,7 @@ with the option to use ACE permissions to enhance security.
 Copyright © 2024 asciidude - All rights reservered, MIT license [(view more)](LICENSE)
 
 ## Prerequisites
-- [imgbb API key](https://api.imgbb.com) - [Setup Guide](#ImgBB_Setup)
+- [imgbb API key](https://api.imgbb.com)
 
 ## Configuration
 Everything is explained in the configuration file. If you have further inquiries, please contact me via the plugin page. GitHub is entirely for development
