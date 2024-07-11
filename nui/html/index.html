@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>sketch&send</title>
+
+        <link rel="stylesheet" href="../css/index.css">
+    </head>
+    <body>
+        <!-- Sketchpad -->
+        <div class="sketch-container hidden" id="sketchContainer">
+            <div class="header">
+                <div class="text">
+                    <h2>Sketch & Send</h2>
+                    <p style="font-style: italic;">created with 💗 asciidude</p>
+                    <span class="info">(esc to close)</span>
+                </div>
+            </div>
+    
+            <div class="sketch-area" style="float: left;">
+                <canvas id="sketchpad" style="width: 100%; height: 100%;"></canvas>
+            </div>
+            
+            <div class="controls">
+                <button id="send">Send</button>
+                <button id="clear">Clear</button>
+                <div class="input-group">
+                    <label for="color">Color</label>
+                    <input type="color" id="color" value="#000000">
+                </div>
+                <div class="input-group">
+                    <label for="size">Size</label>
+                    <input type="range" id="size" min="1" max="100" value="3"><br class="adjust-margin"/>
+                </div>
+                <button id="brush" class="toggled">Brush</button>
+                <button id="eraser">Eraser</button>
+            </div>
+        </div>
+
+        <!-- View -->
+        <div class="view-container hidden" id="viewContainer">
+            <div id="imageContainer">
+                <img alt="Sketch View" id="viewImage">
+                <div id="imageInfo">
+                    [Player Name] (Server #[ID])
+                </div>
+            </div>
+        </div>
+        
+        <!-- Error Modal -->
+        <div id="errorModal" class="error-modal">
+            <div class="error-modal-content">
+                <span id="errorClose" class="close-modal">&times;</span>
+                <h2>Error</h2>
+                <p id="errorMessage"></p>
+            </div>
+        </div>
+    
+        <!-- Player Modal -->
+        <div id="sendModal" class="send-modal">
+            <div class="send-modal-content">
+                <span id="sendClose" class="close-modal">&times;</span>
+                <h2>Enter Player ID to Send the Sketch</h2>
+                <div class="input-group">
+                    <input type="number" id="playerIdInput" placeholder="Enter Player ID" required>
+                    <button id="sendPlayerId" type="submit">Send</button>
+                </div>
+            </div>
+        </div>
+
+        <script src="../js/index.js"></script>
+    </body>
+</html>

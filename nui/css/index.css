@@ -1,0 +1,266 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 98vh;
+    flex-direction: column;
+}
+
+.hidden {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    pointer-events: none;
+    background: transparent;
+}
+
+/* Sketch */
+
+.sketch-container {
+    background: rgba(20, 20, 20, 0.9);
+    width: 80vw;
+    max-width: 800px;
+    height: 80vh;
+    max-height: 600px;
+    color: white;
+    text-align: center;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sketch-container .header {
+    background: black;
+    width: 100%;
+    padding: 5px;
+    border-radius: 30px 30px 0 0;
+}
+
+.sketch-container .header .text {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.sketch-container .header .text .info {
+    font-size: 15px;
+    color: rgb(100, 100, 100);
+    margin-top: 10px;
+    font-style: italic;
+}
+
+/* Sketch Area */
+.sketch-container .sketch-area {
+    background: white;
+    width: 100%;
+    height: calc(100% - 100px);
+    border: 2px solid black;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: block;
+    flex-grow: 1;
+}
+
+/* Controls */
+
+.sketch-container .controls {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    justify-content: center;
+    width: 100%;
+    background: black;
+    padding: 5px;
+    border-radius: 0 0 30px 30px;
+}
+
+.sketch-container .controls button {
+    color: white;
+    background: rgb(48, 120, 255);
+    padding: 5px 8px;
+    border-radius: 5px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.sketch-container .controls button.toggled {
+    background: rgb(0, 89, 255) !important;
+}
+
+.sketch-container .controls .input-group {
+    display: flex;
+    align-items: center;
+    margin: 0 5px; /* Adjust the margin to control spacing between input groups */
+}
+
+.sketch-container .controls .input-group label {
+    margin: 0 5px; /* Ensure the label is inline with the input */
+}
+
+.sketch-container .controls .input-group input[type="color"] {
+    margin: 0; /* Removed extra margins */
+    background: rgb(48, 120, 255);
+    padding: 1px;
+}
+
+.sketch-container .controls .input-group input[type="range"] {
+    margin: 0; /* Removed extra margins */
+    height: 46px;
+}
+
+/* (*) Modals */
+
+.sketch-container .close-modal {
+    color: black;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+/* View */
+.view-container {
+    position: relative;
+    display: inline-block;
+}
+.view-container #viewImage {
+    max-width: 80%;
+    max-height: 80%;
+    background-color: white;
+    display: block;
+    margin: auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+#imageInfo {
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    z-index: 10;
+}
+
+/* Error Modal */
+.error-modal {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    overflow: auto;
+}
+
+.error-modal-content {
+    background-color: rgb(255, 72, 72);
+    color: white;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    width: 50%;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.error-modal-content h2 {
+    margin-top: 0;
+}
+
+.error-modal-content p {
+    font-size: 18px;
+    margin: 20px 0;
+}
+
+/* Send Modal */
+.send-modal {
+    display: none;
+    position: fixed;
+    z-index: 5;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+}
+
+.send-modal .send-modal-content {
+    text-align: center;
+    margin: auto;
+    padding: 20px;
+    background: rgb(30, 30, 30);
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 10px;
+    width: 80%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.send-modal .input-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+}
+
+.send-modal .input-group input[type="number"] {
+    padding: 5px;
+    color: black;
+    border: 0;
+    border-radius: 5px;
+    margin-right: 5px; /* Add space between the input and the button */
+}
+
+.send-modal .input-group button[type="submit"] {
+    color: white;
+    background: rgb(48, 120, 255);
+    border: 0;
+    padding: 5px 8px;
+    border-radius: 5px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.send-modal .close-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: white;
+    background-color: rgb(50, 50, 50);
+    font-size: 20px;
+    padding: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-radius: 5px;
+    cursor: pointer;
+}
