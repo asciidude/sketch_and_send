@@ -96,6 +96,19 @@ AddEventHandler('SketchNSend:GetPlayerData_View', function(senderId, url)
     TriggerClientEvent('SketchNSend:PlayerDataReceived_View', senderId, playerInfo, url)
 end)
 
+RegisterNetEvent('SketchNSend:GetPlayerList')
+AddEventHandler('SketchNSend:GetPlayerList', function()
+    local players = {}
+    for _, id in ipairs(GetPlayers()) do
+        table.insert(players, {
+            id = id,
+            name = GetPlayerName(id)
+        })
+    end
+
+    TriggerClientEvent('SketchNSend:RecievePlayerList', source, players)
+end)
+
 RegisterNetEvent('SketchNSend:RequestResponse')
 AddEventHandler('SketchNSend:RequestResponse', function(senderId, accepted)
     if accepted then

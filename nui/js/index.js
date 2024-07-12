@@ -19,9 +19,6 @@ window.addEventListener('DOMContentLoaded', () => {
     const sendBtn = document.getElementById('send');
     const sendModal = document.getElementById('sendModal');
     const sendClose = document.getElementById('sendClose');
-    
-    const sendPlayerIdBtn = document.getElementById('sendPlayerId');
-    const playerIdInput = document.getElementById('playerIdInput');
 
     const errorModal = document.getElementById('errorModal');
     const errorMessage = document.getElementById('errorMessage');
@@ -132,51 +129,83 @@ window.addEventListener('DOMContentLoaded', () => {
     });
     
     // Send Functionality
+    const playerList = document.getElementById('playerList');
+    
+    function fetchPlayerList() {
+        fetch(`https://${GetParentResourceName()}/getPlayerList`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({}),
+        });
+    }
+
+    // Handle incoming player list
+    window.addEventListener('message', (event) => {
+        if (event.data.type === 'playerList') {
+            playerList.innerHTML = '';
+            event.data.players.forEach(player => {
+                const listItem = document.createElement('li');
+                listItem.classList.add('input-group');
+
+                const playerName = document.createElement('p');
+                playerName.textContent = `${player.name} (Server #${player.id})`;
+
+                const sendButton = document.createElement('button');
+                sendButton.textContent = 'Send';
+                sendButton.addEventListener('click', () => {
+                    sendSketch(player.id);
+                });
+
+                listItem.appendChild(playerName);
+                listItem.appendChild(sendButton);
+                playerList.appendChild(listItem);
+            });
+        }
+    });
+
+    function sendSketch(playerId) {
+        const dataURL = sketchpad.toDataURL('image/png', 1.0).split(';base64,')[1];
+        fetch(`https://${GetParentResourceName()}/saveSketch`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ image: dataURL, requestId: playerId }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+
+            sendModal.style.display = 'none';
+            
+            sketchContainer.classList.add('hidden');
+            document.body.style.background = 'transparent';
+
+            fetch(`https://${GetParentResourceName()}/closeSketchpad`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify({})
+            });
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            showErrorModal('Server ID was incorrect or there is an internal server error.');
+        });
+    }
+
+    // Open send modal
     sendBtn.addEventListener('click', () => {
+        fetchPlayerList();
         sendModal.style.display = 'block';
     });
 
     sendClose.onclick = function() {
         sendModal.style.display = 'none';
-        playerIdInput.textContent = '';
     }
-
-    sendPlayerIdBtn.addEventListener('click', () => {
-        const playerId = parseInt(playerIdInput.value);
-        if (!isNaN(playerId)) {
-            const dataURL = sketchpad.toDataURL('image/png', 1.0).split(';base64,')[1];
-            fetch(`https://${GetParentResourceName()}/saveSketch`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ image: dataURL, requestId: playerId }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-
-                sendModal.style.display = 'none';
-                
-                sketchContainer.classList.add('hidden');
-                document.body.style.background = 'transparent';
-
-                fetch(`https://${GetParentResourceName()}/closeSketchpad`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json; charset=UTF-8'
-                    },
-                    body: JSON.stringify({})
-                });
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                showErrorModal('Server ID was incorrect or there is an internal server error.');
-            });
-        } else {
-            showErrorModal('Please enter a valid Player ID.');
-        }
-    });
 
     // NUI Handler
     window.addEventListener('message', (event) => {
@@ -188,8 +217,6 @@ window.addEventListener('DOMContentLoaded', () => {
             
             color = colorInput.value;
             size = sizeInput.value;
-
-            playerIdInput.value = '';
 
             ctx.fillStyle = '#FFFFFF';
             ctx.fillRect(0, 0, sketchpad.clientWidth, sketchpad.clientHeight);
@@ -209,7 +236,6 @@ window.addEventListener('DOMContentLoaded', () => {
             document.body.style.background = 'transparent';
 
             sendModal.style.display = 'none';
-            playerIdInput.textContent = '';
 
             errorModal.style.display = 'none';
             errorMessage.textContent = '';
@@ -229,7 +255,6 @@ window.addEventListener('DOMContentLoaded', () => {
             document.body.style.background = 'transparent';
 
             sendModal.style.display = 'none';
-            playerIdInput.textContent = '';
 
             errorModal.style.display = 'none';
             errorMessage.textContent = '';

@@ -11,6 +11,11 @@ RegisterNUICallback("closeSketchpad", function(data, cb)
     cb("ok")
 end)
 
+RegisterNUICallback("getPlayerList", function(data, cb)
+    TriggerServerEvent('SketchNSend:GetPlayerList')
+    cb("ok")
+end)
+
 -- Event Handling
 RegisterNetEvent('SketchNSend:ShowSketchpad')
 AddEventHandler('SketchNSend:ShowSketchpad', function()
@@ -23,6 +28,14 @@ end)
 RegisterNetEvent('SketchNSend:ShowSketchpad_View')
 AddEventHandler('SketchNSend:ShowSketchpad_View', function(url, senderId)
     TriggerServerEvent('SketchNSend:GetPlayerData_View', senderId, url)
+end)
+
+RegisterNetEvent('SketchNSend:RecievePlayerList')
+AddEventHandler('SketchNSend:RecievePlayerList', function(players)
+    SendNUIMessage({
+        type = "playerList",
+        players = players
+    })
 end)
 
 -- Handling the response from the server
